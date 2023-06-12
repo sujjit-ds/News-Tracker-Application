@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapid News</title>
+</head>
+<body style="background-image: linear-gradient(to bottom right,rgb(255, 255, 255), rgb(255, 255, 255)); background-attachment: fixed;" >
+    <div>
+        <header>
+
+            <div class="container">
+              
+            <img src="https://lh3.googleusercontent.com/pw/AL9nZEUJ7k8qJT7k17QhlOVCZWZHIyutq5B43t-9Vfs5k3Mzxy92BwH68ugScoIAjB5wUtFCAoOheeIN0BKELALefz_hOmLtKGux-IF1Tz80fUdug8GILW0zCxYbUaFOKsDCE6OiISDfbFqg1SJcW4wWUPQ=w444-h138-no?authuser=0" class="logo" alt="logo" height="5%" width="15%" />
+              <nav>
+                <ul>
+                  <li><a href="/login" name="home">Home</a></li>
+                  <li><a name="about">About</a></li>
+                  <li><a href="/login" name="login">Login</a></li>
+                  <li><a href="/login" name="register">Register</a></li>
+                  <li><a href="/login" name="logout">Logout</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+      
+        <p style="margin:20px" id="display"></p>
+
+        <!-- <button id="news">GET NEWS</button> -->
+    </div>
+    <!-- <section id="covid-news">
+
+    </section> -->
+    <section id="all-news">
+
+    </section>
+</body>
+<style>        
+
+    @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+      body {
+          margin: 0;
+          background: #222;
+          font-family: 'Work Sans', sans-serif;
+          font-weight: 800;
+      }
+      
+      .container {
+          width: 80%;
+          margin: 0 auto;
+      }
+      
+      header {
+        background: #FFEBB9;
+        height:10%;
+      }
+      
+      header::after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+      
+      .logo {
+        float: left;
+        size: 20%;
+        height: 10%;
+        padding: 10px;
+      }
+      
+      nav {
+        float: right;
+      }
+      
+      nav ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      
+      nav li {
+        display: inline-block;
+        margin-left: 70px;
+        padding-top: 23px;
+        position: relative;
+      }
+      
+      nav a {
+        color: #444;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 14px;
+      }
+      
+      nav a:hover {
+        color: #000;
+      }
+      
+      nav a::before {
+        content: '';
+        display: block;
+        height: 5px;
+        background-color: #444;
+      
+        position: absolute;
+        top: 0;
+        width: 0%;
+      
+        transition: all ease-in-out 250ms;
+      }
+      
+      nav a:hover::before {
+        width: 100%;
+      }
+</style>
+<script>
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+     //API Integration
+
+        document.addEventListener("DOMContentLoaded", async ()=> {
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '14e58ca9ccmshfd7b68165c8bd40p1a1c44jsncc2652d4ca2c',
+                    'X-RapidAPI-Host': 'newscatcher.p.rapidapi.com'
+                }
+            };
+
+            fetch('https://newscatcher.p.rapidapi.com/v1/latest_headlines?topic=news&lang=en&country=in&media=True', options)
+                .then(response => response.json())
+                .then(response => {
+                    
+                    console.log(response)
+
+                    response.articles.forEach(article => {
+
+                        var template = `
+                                <div style="margin-left:5px; margin-right:100px;  
+                                background-color: white; 
+                                width: 1350px; 
+                                border: 5px solid grey; 
+                                padding: 35px;
+                                margin: 10px;">
+
+                                    <h1 style="text-transform: uppercase; text-weight:bold; background-color:F1694B;">${article.title}</h1>
+                                    <a href=${article.link}>Click Here For Detailed News</a>
+                                    <p>Author:${article.author}</p>
+                                    <h3 style="text-transform: uppercase;">${article.topic}</h3>
+                                    <p>${article.summary}</p>
+
+                                    
+                                    <img src=${article.media}></img>
+                                    
+                                    <div>
+                                        published date
+                                        <small style="text-transform: uppercase;>${article.published_date}</small>
+                                    </div>
+                                </div>
+                        `;
+
+                        document.getElementById("all-news").innerHTML += template;
+
+                    })
+
+                }
+                )
+                .catch(err => console.error(err));
+            
+        })  
+        
+
+        //WatsonAssistantChat
+        
+        window.watsonAssistantChatOptions = {
+        integrationID: "7fcdf13c-3454-460f-89e9-74f778b49add", // The ID of this integration.
+        region: "us-south", // The region your integration is hosted in.
+        serviceInstanceID: "93881c92-35d0-4d2c-a62f-a3e1ef8dd91d", // The ID of your service instance.
+        onLoad: function(instance) { instance.render(); }
+        };
+        setTimeout(function(){
+        const t=document.createElement('script');
+        t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+        document.head.appendChild(t);
+          });
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                
+    
+</script>
+</html>
